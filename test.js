@@ -35,8 +35,7 @@ for (let i = 0; i < 5_000; i++) {
     }`
   );
 
-  const balloonsJSON = await result.json();
-  const balloonsList = balloonsJSON.balloons;
+  const balloonsList = await result.json();
   const volume = length * width * height;
   let volumeOfBalloons = 0;
   let massOfBalloons = 0;

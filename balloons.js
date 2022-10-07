@@ -51,7 +51,7 @@ export class Balloons {
   balloonIterator() {
     // these will be sorted with largest first
     // since the score used was negative
-    let balloons = this.sortedSet.rangeByScore(0);
+    let balloons = this.sortedSet.rangeByScore(null);
 
     return {
       [Symbol.iterator]() {
