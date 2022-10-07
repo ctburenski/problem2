@@ -43,7 +43,12 @@ app.get("/balloons", (req, res) => {
     (!req.query["mass"] || mass > 0)
   ) {
     return res.json({
-      balloons: balloons.getMaxBalloons(length, width, height, mass),
+      balloons: balloons.getMaxBalloons(
+        length,
+        width,
+        height,
+        isNaN(mass) ? undefined : mass
+      ),
     });
   } else {
     return res

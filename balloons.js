@@ -14,7 +14,7 @@ export class Balloons {
 
   set(tag, volume, mass) {
     // the sorted set will return the smallest item first
-    // so this trick will let us get the biggest item
+    // so the negative sign will let us get the biggest item
     // first so we can use pop instead of shift on the
     // results.
     this.sortedSet.set(tag, -volume);
@@ -23,32 +23,36 @@ export class Balloons {
 
   getMaxBalloons(length, width, height, mass) {
     const maxVolume = length * width * height;
-    let currentVolume = 0;
+    const maxMass = mass;
 
     let balloonsList = [];
-
     let balloonIterator = this.balloonIterator();
 
-    const maxMass = mass;
-    let currentMass = 0;
+    let updatedVolume = 0;
+    let updatedMass = 0;
 
     for (const tag of balloonIterator) {
       const { mass, volume } = this.balloonValues.get(tag);
 
-      currentMass += mass;
-      currentVolume += volume;
-      if (currentVolume <= maxVolume && (!mass || currentMass <= maxMass)) {
+      updatedMass += mass;
+      updatedVolume += volume;
+      if (updatedVolume <= maxVolume && (!mass || updatedMass <= maxMass)) {
         balloonsList.push({ tag, mass, volume });
       } else {
         return balloonsList;
       }
     }
 
+    // if there are not enough balloons to fill
+    // the space we return what we can
     return balloonsList;
   }
 
   balloonIterator() {
+    // these will be sorted with largest first
+    // since the score used was negative
     let balloons = this.sortedSet.rangeByScore(0);
+
     return {
       [Symbol.iterator]() {
         return this;
