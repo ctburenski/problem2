@@ -10,42 +10,46 @@ app.put("/balloons/:tag", (req, res) => {
   const { mass, volume } = req.body;
 
   // ensure request follows constraints
-  if (
-    typeof mass !== "number" ||
-    mass < 0 ||
-    typeof volume !== "number" ||
-    volume < 0
-  ) {
+  if (mass > 0 && volume > 0) {
+    const tag = req.params.tag;
+    // not 100% sure this check is needed
+    if (!tag) {
+      return res
+        .status(400)
+        .json({ Error: "The tag parameter must be included." });
+    }
+
+    balloons.set(tag, volume, mass);
+
+    return res.status(200).send();
+  } else {
     return res
       .status(400)
       .json({ Error: "Mass and volume must both be numbers greater than 0." });
   }
-
-  const tag = req.params.tag;
-  // not 100% sure this check is needed
-  if (!tag) {
-    return res
-      .status(400)
-      .json({ Error: "The tag parameter must be included." });
-  }
-
-  balloons.set(tag, volume, mass);
-
-  return res.status(200).send();
 });
 
 app.get("/balloons", (req, res) => {
-  const length = req.query["length"];
-  const width = req.query["width"];
-  const height = req.query["height"];
-  const mass = req.query["mass"];
+  const length = parseFloat(req.query["length"]);
+  const width = parseFloat(req.query["width"]);
+  const height = parseFloat(req.query["height"]);
+  const mass = parseFloat(req.query["mass"]);
 
   // ensure request follows constraints
-  if (length < 0 || width < 0 || height < 0) {
-    return res.status(400).json({ Error: "Container volume must be nonzero." });
+  if (
+    length > 0 &&
+    width > 0 &&
+    height > 0 &&
+    (!req.query["mass"] || mass > 0)
+  ) {
+    return res.json({
+      balloons: balloons.getMaxBalloons(length, width, height, mass),
+    });
+  } else {
+    return res
+      .status(400)
+      .json({ Error: "Container volume must be a number greater than zero." });
   }
-
-  res.json({ balloons: balloons.getMaxBalloons(length, width, height, mass) });
 });
 
 export { app };

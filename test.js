@@ -1,7 +1,7 @@
 let okCount = 0;
 let failedCount = 0;
-for (let i = 0; i < 7_000; i++) {
-  const volume = Math.ceil(Math.random() * 150);
+for (let i = 0; i < 5_000; i++) {
+  const volume = Math.random() * 150;
   const mass = volume;
   const result = await fetch(`http://localhost:7777/balloons/${i}`, {
     method: "PUT",
@@ -23,12 +23,12 @@ for (let i = 0; i < 7_000; i++) {
   }
 }
 
-for (let i = 0; i < 7_000; i++) {
-  const width = Math.ceil(Math.random() * 7);
-  const length = Math.ceil(Math.random() * 7);
-  const height = Math.ceil(Math.random() * 7);
+for (let i = 0; i < 5_000; i++) {
+  const width = Math.random() * 7;
+  const length = Math.random() * 7;
+  const height = Math.random() * 7;
   const massBool = Math.ceil(Math.random() * 10) % 2;
-  const mass = Math.ceil(Math.random() * 1_000);
+  const mass = Math.random() * 1_000;
   const result = await fetch(
     `http://localhost:7777/balloons?width=${width}&height=${height}&length=${length}${
       massBool ? "&mass=" + mass : ""
@@ -37,7 +37,7 @@ for (let i = 0; i < 7_000; i++) {
 
   const balloonsJSON = await result.json();
   const balloonsList = balloonsJSON.balloons;
-  const volume = mass * width * height;
+  const volume = length * width * height;
   let volumeOfBalloons = 0;
   let massOfBalloons = 0;
 
@@ -66,6 +66,7 @@ for (let i = 0; i < 7_000; i++) {
     } else {
       console.error(`API request was not ok. Status: ${result.status}`);
     }
+    console.log("Balloons:", balloonsList);
   }
 }
 
