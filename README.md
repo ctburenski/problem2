@@ -9,6 +9,8 @@ The server will listen over port 7777.
 
 Since the test uses fetch within nodejs, it will display a warning explaining the fetch API is experimental. No flags need to be turned on to run the test.
 
+This test populates the server with balloons of a random volumes with an incrementing tag, and then make requests with random container sizes, and about half of the time with a random mass passed in. If a second run is done will perform updates on all the previous tags and it seems to perform identically.
+
 - test in separate terminal with `node test.js`
 
 # Assumptions
